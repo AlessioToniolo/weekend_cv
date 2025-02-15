@@ -26,3 +26,14 @@ class ImageProcessing:
         contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
         return contours
+
+def main():
+    image_processor = ImageProcessing()
+    contours = image_processor.get_contours()
+    
+    print(f"Number of contours found: {len(contours)}")
+    for i, contour in enumerate(contours):
+        print(f"Contour {i}: {contour}")
+
+if __name__ == "__main__":
+    main()
