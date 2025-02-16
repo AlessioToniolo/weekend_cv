@@ -48,3 +48,34 @@ class CameraInterface:
         """
         self.pipeline.stop()
 
+if __name__ == "__main__":
+    import cv2
+
+    # Initialize camera
+    camera = CameraInterface()
+
+    try:
+        while True:
+            # Get color and depth frames
+            color_frame = camera.get_color_frame()
+            depth_frame = camera.get_depth_frame()
+
+            if color_frame is not None and depth_frame is not None:
+                # Normalize depth frame for visualization (convert to 8-bit grayscale)
+                depth_colormap = cv2.applyColorMap(
+                    cv2.convertScaleAbs(depth_frame, alpha=0.03), 
+                    cv2.COLORMAP_JET
+                )
+
+                # Show frames
+                cv2.imshow('Color Frame', color_frame)
+                cv2.imshow('Depth Frame', depth_colormap)
+
+            # Break loop on 'q' press
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
+    finally:
+        # Clean up
+        camera.stop()
+        cv2.destroyAllWindows()
